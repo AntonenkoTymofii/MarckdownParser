@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Main {
@@ -51,6 +53,8 @@ public class Main {
     }
 
     private static void writeHTMLToFile(String filePath, String htmlContent) throws IOException {
-
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(htmlContent);
+        }
     }
 }
