@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class Main {
@@ -32,7 +34,16 @@ public class Main {
     }
 
     private static String readMarkdownFile(String filePath) throws IOException {
-        return null;
+        StringBuilder content = new StringBuilder();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        }
+
+        return content.toString();
     }
 
     private static String convertMarkdownToHTML(String markdownContent) {
