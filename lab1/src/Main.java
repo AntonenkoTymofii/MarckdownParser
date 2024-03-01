@@ -3,11 +3,17 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class Main {
+    private static final Pattern boldRegEx = Pattern.compile("\\*\\*(.*?)\\*\\*", Pattern.DOTALL);
+    private static final Pattern italicRegEx = Pattern.compile("_(.*?)_", Pattern.DOTALL);
+    private static final Pattern monoRegEx = Pattern.compile("`(.*?)`", Pattern.DOTALL);
+    private static final Pattern preFormRegEx = Pattern.compile("```(.*?)```", Pattern.DOTALL);
+
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.err.println("Usage: java MarkdownToHTMLConverter <input_file> [--out <output_file>]");
+            System.err.println("Usage: java Main <input_file> [--out <output_file>]");
             System.exit(1);
         }
 
@@ -49,13 +55,13 @@ public class Main {
     }
 
     private static String convertMarkdownToHTML(String markdownContent) {
-        markdownContent = markdownContent.replaceAll("\\*\\*(.*?)\\*\\*", "<b>$1</b>");
+        markdownContent = boldRegEx.matcher(markdownContent).replaceAll("<b>$1</b>");
 
-        markdownContent = markdownContent.replaceAll("_(.*?)_", "<i>$1</i>");
+        markdownContent = italicRegEx.matcher(markdownContent).replaceAll("<i>$1</i>");
 
-        markdownContent = markdownContent.replaceAll("`([^`]+)`", "<tt>$1</tt>");
+        markdownContent = preFormRegEx.matcher(markdownContent).replaceAll("<pre>$1</pre>");
 
-        markdownContent = markdownContent.replaceAll("```([^`]+)```", "<pre>$1</pre>");
+        markdownContent = monoRegEx.matcher(markdownContent).replaceAll("<tt>$1</tt>");
 
         return markdownContent;
     }
