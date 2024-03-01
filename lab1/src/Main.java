@@ -23,7 +23,7 @@ public class Main {
             String htmlContent = convertMarkdownToHTML(markdownContent);
 
             if (outputPath != null) {
-                writeHTMLToFile(outputPath, htmlContent);
+                writeHTMLToFile(outputPath, "<p>" + htmlContent + "</p>");
                 System.out.println("HTML content saved to '" + outputPath + "'");
             } else {
                 System.out.println(htmlContent);
@@ -49,7 +49,15 @@ public class Main {
     }
 
     private static String convertMarkdownToHTML(String markdownContent) {
-        return null;
+        markdownContent = markdownContent.replaceAll("\\*\\*(.*?)\\*\\*", "<b>$1</b>");
+
+        markdownContent = markdownContent.replaceAll("_(.*?)_", "<i>$1</i>");
+
+        markdownContent = markdownContent.replaceAll("`([^`]+)`", "<tt>$1</tt>");
+
+        markdownContent = markdownContent.replaceAll("```([^`]+)```", "<pre>$1</pre>");
+
+        return markdownContent;
     }
 
     private static void writeHTMLToFile(String filePath, String htmlContent) throws IOException {
