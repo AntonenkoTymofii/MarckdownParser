@@ -13,7 +13,7 @@ public class Main {
         String inputPath = args[0];
         String outputPath = null;
 
-        if (args.length == 4 && args[1].equals("--out")) {
+        if (args.length == 3 && args[1].equals("--out")) {
             outputPath = args[2];
         }
 
@@ -22,7 +22,7 @@ public class Main {
             String htmlContent = markdownConverter.convertMarkdownToHTML(markdownContent);
 
             if (outputPath != null) {
-                markdownConverter.writeHTMLToFile(outputPath, "<p>" + htmlContent + "</p>");
+                markdownConverter.writeHTMLToFile(outputPath, htmlContent);
                 System.out.println("HTML content saved to '" + outputPath + "'");
             } else {
                 System.out.println(htmlContent);
