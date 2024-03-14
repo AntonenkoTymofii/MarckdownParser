@@ -8,14 +8,19 @@ public class MarkdownConverter {
     private final Pattern preFormRegEx = Pattern.compile("```(.*?)```", Pattern.DOTALL);
 
     public String readMarkdownFile(String filePath) throws IOException {
-        StringBuilder content = new StringBuilder();
+        StringBuilder content = new StringBuilder("<p>\n");
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line = "<p>";
+            String line;
             while ((line = reader.readLine()) != null) {
-                content.append("<p>").append(line).append("</p>\n");
+                if (!(line.isEmpty())) {
+                    content.append(line).append("\n");
+                } else {
+                    content.append("</p>\n<p>\n");
+                }
             }
         }
+        content.append("</p>");
 
         return content.toString();
     }
