@@ -7,6 +7,8 @@ public class MarkdownConverter {
     private final Pattern italicRegEx = Pattern.compile("_(.*?)_", Pattern.DOTALL);
     private final Pattern monoRegEx = Pattern.compile("`(.*?)`", Pattern.DOTALL);
     private final Pattern preFormRegEx = Pattern.compile("(```)(.*?)(```)", Pattern.DOTALL);
+    private final Pattern invalidRegEx = Pattern.compile("\\*\\*`_(.*?)_`\\*\\*", Pattern.DOTALL);
+    private final Pattern notFinalFormatRegEx = Pattern.compile("\\*\\*(.*?)|_(.*?)|`(.*?)", Pattern.DOTALL);
 
     public String readMarkdownFile(String filePath) throws IOException {
         StringBuilder content = new StringBuilder("<p>\n");
@@ -26,7 +28,11 @@ public class MarkdownConverter {
         return content.toString();
     }
 
-    public String convertMarkdownToHTML(String markdownContent) {
+    public String convertMarkdownToHTML(String markdownContent) throws InvalidFormatException {
+        if(invalidRegEx.matcher(markdownContent).find()){
+            throw new InvalidFormatException("Некоректний формат даних");
+        }
+
         markdownContent = boldRegEx.matcher(markdownContent).replaceAll("<b>$1</b>");
 
         markdownContent = italicRegEx.matcher(markdownContent).replaceAll("<i>$1</i>");
@@ -46,6 +52,10 @@ public class MarkdownConverter {
         markdownContent = result.toString();
 
         markdownContent = monoRegEx.matcher(markdownContent).replaceAll("<tt>$1</tt>");
+
+        if(notFinalFormatRegEx.matcher(markdownContent).find()){
+            throw new InvalidFormatException("Нескінчене форматування");
+        }
 
         return markdownContent;
     }

@@ -31,6 +31,9 @@ public class Main {
                 System.out.println(htmlContent);
             }
 
+        } catch (InvalidFormatException e) {
+            System.err.println("Error: " + e.getMessage());
+            System.exit(1);
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
             System.exit(1);
