@@ -13,6 +13,9 @@ public class Main {
         String inputPath = args[0];
         String outputPath = null;
 
+//        String inputPath = "D:\\homework\\4 sem\\SDMT\\MarckdownParser\\lab1\\src\\TEST.md";
+//        String outputPath = "D:\\homework\\4 sem\\SDMT\\MarckdownParser\\lab1\\src\\test.html";
+
         if (args.length == 3 && args[1].equals("--out")) {
             outputPath = args[2];
         }

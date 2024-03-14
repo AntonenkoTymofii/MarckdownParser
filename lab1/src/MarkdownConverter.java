@@ -1,11 +1,12 @@
 import java.io.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MarkdownConverter {
     private final Pattern boldRegEx = Pattern.compile("\\*\\*(.*?)\\*\\*", Pattern.DOTALL);
     private final Pattern italicRegEx = Pattern.compile("_(.*?)_", Pattern.DOTALL);
     private final Pattern monoRegEx = Pattern.compile("`(.*?)`", Pattern.DOTALL);
-    private final Pattern preFormRegEx = Pattern.compile("```(.*?)```", Pattern.DOTALL);
+    private final Pattern preFormRegEx = Pattern.compile("(```)(.*?)(```)", Pattern.DOTALL);
 
     public String readMarkdownFile(String filePath) throws IOException {
         StringBuilder content = new StringBuilder("<p>\n");
@@ -30,7 +31,19 @@ public class MarkdownConverter {
 
         markdownContent = italicRegEx.matcher(markdownContent).replaceAll("<i>$1</i>");
 
-        markdownContent = preFormRegEx.matcher(markdownContent).replaceAll("<pre>$1</pre>");
+        Matcher preFormMatcher = preFormRegEx.matcher(markdownContent);
+        StringBuffer result = new StringBuffer();
+        while (preFormMatcher.find()) {
+            markdownContent = monoRegEx.matcher(markdownContent).replaceAll("<tt>$1</tt>");
+            preFormMatcher.appendReplacement(result, "<pre>" + preFormMatcher.group(2)
+                    .replaceAll("<b>(.*?)</b>", "**$1**")
+                    .replaceAll("<i>(.*?)</i>", "_$1_")
+                    .replaceAll("<tt>(.*?)</tt>", "`$1`")
+                    + "</pre>");
+        }
+
+        preFormMatcher.appendTail(result);
+        markdownContent = result.toString();
 
         markdownContent = monoRegEx.matcher(markdownContent).replaceAll("<tt>$1</tt>");
 
