@@ -3,12 +3,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MarkdownConverter {
-    private final Pattern boldRegEx = Pattern.compile("\\*\\*(.*?)\\*\\*", Pattern.DOTALL);
-    private final Pattern italicRegEx = Pattern.compile("_(.*?)_", Pattern.DOTALL);
-    private final Pattern monoRegEx = Pattern.compile("`(.*?)`", Pattern.DOTALL);
+    private final Pattern boldRegEx = Pattern.compile("(?<!\\S)\\*\\*(\\S+?(?=\\s|))\\*\\*", Pattern.DOTALL);
+    private final Pattern italicRegEx = Pattern.compile("(?<!\\S)_(\\S+?(?=\\s|))_", Pattern.DOTALL);
+    private final Pattern monoRegEx = Pattern.compile("(?<!\\S)`(\\S+?(?=\\s|))`", Pattern.DOTALL);
     private final Pattern preFormRegEx = Pattern.compile("(```)(.*?)(```)", Pattern.DOTALL);
     private final Pattern invalidRegEx = Pattern.compile("\\*\\*`_(.*?)_`\\*\\*", Pattern.DOTALL);
-    private final Pattern notFinalFormatRegEx = Pattern.compile("_(.*)|\\*\\*(.*)|`(.*)", Pattern.DOTALL);
+    private final Pattern notFinalFormatRegEx = Pattern.compile("(?<=\\s)_\\w+\\b|(?<=\\s)\\*\\*\\w+\\b|(?<=\\s)`\\w+\\b", Pattern.DOTALL);
 
     public String readMarkdownFile(String filePath) throws IOException {
         StringBuilder content = new StringBuilder("<p>\n");
