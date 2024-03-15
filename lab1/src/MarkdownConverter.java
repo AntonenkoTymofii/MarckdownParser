@@ -8,7 +8,7 @@ public class MarkdownConverter {
     private final Pattern monoRegEx = Pattern.compile("`(.*?)`", Pattern.DOTALL);
     private final Pattern preFormRegEx = Pattern.compile("(```)(.*?)(```)", Pattern.DOTALL);
     private final Pattern invalidRegEx = Pattern.compile("\\*\\*`_(.*?)_`\\*\\*", Pattern.DOTALL);
-    private final Pattern notFinalFormatRegEx = Pattern.compile("\\*\\*(.*?)|_(.*?)|`(.*?)", Pattern.DOTALL);
+    private final Pattern notFinalFormatRegEx = Pattern.compile("_(.*)|\\*\\*(.*)|`(.*)", Pattern.DOTALL);
 
     public String readMarkdownFile(String filePath) throws IOException {
         StringBuilder content = new StringBuilder("<p>\n");
@@ -41,6 +41,9 @@ public class MarkdownConverter {
         StringBuffer result = new StringBuffer();
         while (preFormMatcher.find()) {
             markdownContent = monoRegEx.matcher(markdownContent).replaceAll("<tt>$1</tt>");
+            if(notFinalFormatRegEx.matcher(markdownContent).find()){
+                throw new InvalidFormatException("Нескінчене форматування");
+            }
             preFormMatcher.appendReplacement(result, "<pre>" + preFormMatcher.group(2)
                     .replaceAll("<b>(.*?)</b>", "**$1**")
                     .replaceAll("<i>(.*?)</i>", "_$1_")
@@ -52,10 +55,6 @@ public class MarkdownConverter {
         markdownContent = result.toString();
 
         markdownContent = monoRegEx.matcher(markdownContent).replaceAll("<tt>$1</tt>");
-
-        if(notFinalFormatRegEx.matcher(markdownContent).find()){
-            throw new InvalidFormatException("Нескінчене форматування");
-        }
 
         return markdownContent;
     }
