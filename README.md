@@ -1,6 +1,7 @@
 # MarckdownParser
 
 Виконав: Антоненко Тимофій, студент групи ІМ-21
+
 Перевірив: асистент Ковальчук Олександр Миронович
 
 ## Короткий опис застосунку, що він робить
@@ -36,3 +37,7 @@
 наповнення та відкрити його у браузері.
 
 ## Вказання на revert-commit
+
+SHA: 178ba0dd46a07d582804fe34cb9b0ae71d189563
+
+<a name="revert" href="https://github.com/AntonenkoTymofii/MarckdownParser/commit/178ba0dd46a07d582804fe34cb9b0ae71d189563">Revert-commit</a>
