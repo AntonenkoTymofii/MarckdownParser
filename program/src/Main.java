@@ -6,29 +6,29 @@ public class Main {
 
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.err.println("Usage: java Main <input_file> [--out <output_file>]");
+            System.err.println("Usage: java Main <input_file> [--out <output_file>] [--format=<value>]");
             System.exit(1);
         }
 
         String inputPath = args[0];
         String outputPath = null;
+        String format = null;
 
-        if (args.length == 3 && args[1].equals("--out")) {
-            outputPath = args[2];
+        for (int i = 1; i < args.length; i++) {
+            if (args[i].equals("--out")) {
+                outputPath = args[i + 1];
+                i++;
+            } else if (args[i].startsWith("--format=")) {
+                format = args[i].substring(9);
+            }
         }
 
         try {
-            String markdownContent = markdownConverter.readMarkdownFile(inputPath);
-            String htmlContent = markdownConverter.convertMarkdownToHTML(markdownContent);
+            String markdownContent = markdownConverter.readMarkdownFile(inputPath, format);
+            String outputContent = markdownConverter.convertMarkdownToHTML(markdownContent, format);
+            markdownConverter.writeOutput(outputContent, outputPath, format);
 
-            if (outputPath != null) {
-                markdownConverter.writeHTMLToFile(outputPath, htmlContent);
-                System.out.println("HTML content saved to '" + outputPath + "'");
-            } else {
-                System.out.println(htmlContent);
-            }
-
-        } catch (InvalidFormatException | IOException e) {
+        } catch (IOException | IllegalArgumentException | InvalidFormatException e) {
             System.err.println("Error: " + e.getMessage());
             System.exit(1);
         }
