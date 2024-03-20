@@ -38,7 +38,7 @@ public class MarkdownConverter {
         markdownContent = italicRegEx.matcher(markdownContent).replaceAll("<i>$1</i>");
 
         Matcher preFormMatcher = preFormRegEx.matcher(markdownContent);
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         while (preFormMatcher.find()) {
             markdownContent = monoRegEx.matcher(markdownContent).replaceAll("<tt>$1</tt>");
             if(notFinalFormatRegEx.matcher(markdownContent).find()){
