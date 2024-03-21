@@ -1,3 +1,4 @@
+import org.example.InvalidFormatException;
 import org.example.MarkdownConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +42,18 @@ class MarkdownConverterTest {
     void readMarkdownFileUnknownFormat() {
         Assertions.assertThrows(IllegalArgumentException.class, () ->
                 markdownConverterTest.readMarkdownFile("src/test/resources/TEST.md", "pddh"));
+    }
+
+    @Test
+    void convertMarkdownToHTMLInvalidFormat() {
+        Assertions.assertThrows(InvalidFormatException.class, () ->
+                markdownConverterTest.convertMarkdownToHTML("**`_Hello_`**", null));
+    }
+
+    @Test
+    void convertMarkdownToHTMLNotFinalFormat() {
+        Assertions.assertThrows(InvalidFormatException.class, () ->
+                markdownConverterTest.convertMarkdownToHTML(" **Hello", null));
     }
 
     @Test
