@@ -27,7 +27,7 @@ public class MarkdownConverter {
             }
             content.append("</p>");
 
-        } else if (format.equals("ansi")) {
+        } else if (format.equals("ansi") || format.equals("ANSI")) {
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
