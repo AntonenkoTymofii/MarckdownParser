@@ -29,7 +29,8 @@ class MarkdownConverterTest {
     void convertMarkdownToHTML() {
     }
 
-    @org.junit.jupiter.api.Test
+
+    @Test
     void writeOutput() {
     }
 }
