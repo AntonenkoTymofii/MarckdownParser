@@ -1,11 +1,17 @@
 import org.example.MarkdownConverter;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 class MarkdownConverterTest {
-    MarkdownConverter markdownConverterTest = new MarkdownConverter();
+    MarkdownConverter markdownConverterTest;
+
+    @BeforeEach
+    void setUp(){
+        markdownConverterTest = new MarkdownConverter();
+    }
 
     @Test
     void readMarkdownFileTestHtml() throws IOException {
@@ -23,6 +29,18 @@ class MarkdownConverterTest {
                 markdownConverterTest.readMarkdownFile("src/test/resources/TEST.md", "ansi"));
         Assertions.assertEquals("Hi, my name is **Tim**!\n",
                 markdownConverterTest.readMarkdownFile("src/test/resources/TEST.md", "ANSI"));
+    }
+
+    @Test
+    void readMarkdownFileUnknownPath() {
+        Assertions.assertThrows(IOException.class, () ->
+                markdownConverterTest.readMarkdownFile("src/test/resources/TEST", null));
+    }
+
+    @Test
+    void readMarkdownFileUnknownFormat() {
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+                markdownConverterTest.readMarkdownFile("src/test/resources/TEST.md", "pddh"));
     }
 
     @Test
