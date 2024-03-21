@@ -25,7 +25,7 @@ jobs:
       uses: gradle/gradle-build-action@v1
       
     - name: Build with Gradle Wrapper
-      run: ./program/gradlew build
+      run: ./gradlew build
 
     - name: Run tests
-      run: ./program/gradlew test
+      run: ./gradlew test
