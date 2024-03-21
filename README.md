@@ -41,3 +41,9 @@
 SHA: 178ba0dd46a07d582804fe34cb9b0ae71d189563
 
 <a name="revert" href="https://github.com/AntonenkoTymofii/MarckdownParser/commit/178ba0dd46a07d582804fe34cb9b0ae71d189563">Revert-commit</a>
+
+## Вказання на commit де впали тести
+
+SHA: d5e1061d9d8b365f0caffdd97a84034d864607d2
+
+<a name="drop" href="https://github.com/AntonenkoTymofii/MarckdownParser/commit/d5e1061d9d8b365f0caffdd97a84034d864607d2">Drop Tests Commit</a>

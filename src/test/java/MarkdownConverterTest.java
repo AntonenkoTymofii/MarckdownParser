@@ -11,19 +11,19 @@ class MarkdownConverterTest {
     @Test
     void readMarkdownFileTestHtml() throws IOException {
         Assertions.assertEquals("<p>\nHi, my name is **Tim**!\n</p>",
-                markdownConverterTest.readMarkdownFile("D:\\homework\\4 sem\\SDMT\\MarckdownParser\\program\\src\\TEST.md", "html"));
+                markdownConverterTest.readMarkdownFile("D:\\homework\\4 sem\\SDMT\\MarckdownParser\\src\\test\\resources\\TEST.md", "html"));
     }
     @Test
     void readMarkdownFileTestNull() throws IOException {
         Assertions.assertEquals("<p>\nHi, my name is **Tim**!\n</p>",
-                markdownConverterTest.readMarkdownFile("D:\\homework\\4 sem\\SDMT\\MarckdownParser\\program\\src\\TEST.md", null));
+                markdownConverterTest.readMarkdownFile("D:\\homework\\4 sem\\SDMT\\MarckdownParser\\src\\test\\resources\\TEST.md", null));
     }
     @Test
     void readMarkdownFileTestAnsi() throws IOException {
         Assertions.assertEquals("Hi, my name is **Tim**!\n",
-                markdownConverterTest.readMarkdownFile("D:\\homework\\4 sem\\SDMT\\MarckdownParser\\program\\src\\TEST.md", "ansi"));
+                markdownConverterTest.readMarkdownFile("D:\\homework\\4 sem\\SDMT\\MarckdownParser\\src\\test\\resources\\TEST.md", "ansi"));
         Assertions.assertEquals("Hi, my name is **Tim**!\n",
-                markdownConverterTest.readMarkdownFile("D:\\homework\\4 sem\\SDMT\\MarckdownParser\\program\\src\\TEST.md", "ANSI"));
+                markdownConverterTest.readMarkdownFile("D:\\homework\\4 sem\\SDMT\\MarckdownParser\\src\\test\\resources\\TEST.md", "ANSI"));
     }
 
     @Test
