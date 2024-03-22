@@ -362,7 +362,7 @@ class MarkdownConverterTest {
     }
 
     @Test
-    void writeOutputThrows() {
+    void writeOutputThrowsIOException() {
 
         Assertions.assertThrows(IOException.class, () -> markdownConverterTest.writeOutput(
                 """

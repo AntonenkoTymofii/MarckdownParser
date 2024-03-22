@@ -13,7 +13,7 @@ application {
 
 run {
     main = javaMainClass
-    args = ['src/main/resources/TEST.md', '--format=ansi']
+    args = ['src/main/resources/TEST.md', '--out src/main/resources/test.html', '--format=ansi']
 }
 
 group = "org.example"
