@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.io.*;
 
 class MarkdownConverterTest {
     MarkdownConverter markdownConverterTest;
@@ -38,13 +38,6 @@ class MarkdownConverterTest {
                 "Hi, my name is **Tim**!\n",
                 markdownConverterTest.readMarkdownFile(
                         "src/test/resources/TEST.md", "ansi"
-                )
-        );
-
-        Assertions.assertEquals(
-                "Hi, my name is **Tim**!\n",
-                markdownConverterTest.readMarkdownFile(
-                        "src/test/resources/TEST.md", "ANSI"
                 )
         );
     }
@@ -257,6 +250,131 @@ class MarkdownConverterTest {
 
 
     @Test
-    void writeOutput() {
+    void writeOutputHtml() throws IOException {
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor));
+        markdownConverterTest.writeOutput(
+                """
+                        <p>
+                        <b>Hi</b>
+                        <i>Hi</i>
+                        <tt>Hi</tt>
+                        <pre>
+                        Hi, my name is **Tim**!
+                        </pre>
+                        </p>""",
+                "src/test/resources/test.html", "html");
+
+        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/test.html"));
+        StringBuilder fileContent = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            fileContent.append(line).append("\n");
+        }
+        reader.close();
+
+        Assertions.assertEquals(
+                """
+                        <p>
+                        <b>Hi</b>
+                        <i>Hi</i>
+                        <tt>Hi</tt>
+                        <pre>
+                        Hi, my name is **Tim**!
+                        </pre>
+                        </p>""",
+                fileContent.toString().trim());
+
+        Assertions.assertEquals("HTML content saved to 'src/test/resources/test.html'",
+                outputStreamCaptor.toString().trim());
     }
+
+    @Test
+    void writeOutputNull() throws IOException {
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor));
+        markdownConverterTest.writeOutput(
+                """
+                        <p>
+                        <b>Hi</b>
+                        <i>Hi</i>
+                        <tt>Hi</tt>
+                        <pre>
+                        Hi, my name is **Tim**!
+                        </pre>
+                        </p>""",
+                "src/test/resources/test.html", null);
+
+        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/test.html"));
+        StringBuilder fileContent = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            fileContent.append(line).append("\n");
+        }
+        reader.close();
+
+        Assertions.assertEquals(
+                """
+                        <p>
+                        <b>Hi</b>
+                        <i>Hi</i>
+                        <tt>Hi</tt>
+                        <pre>
+                        Hi, my name is **Tim**!
+                        </pre>
+                        </p>""",
+                fileContent.toString().trim());
+
+        Assertions.assertEquals("HTML content saved to 'src/test/resources/test.html'",
+                outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    void writeOutputAnsi() throws IOException {
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor));
+        markdownConverterTest.writeOutput(
+                """
+                        Hi, my name is \u001b[1mTim\u001b[22m!
+                                                
+                        Hi, my name is \u001b[3mTim\u001b[23m!
+                                                
+                        Hi, my name is \u001b[7mTim\u001b[27m!
+                                                
+                        \u001b[7m
+                        Hi, my name is **Tim**!
+                        \u001b[27m""",
+                "src/test/resources/test.html", "ansi");
+
+
+        Assertions.assertEquals(
+                """
+                        Hi, my name is \u001b[1mTim\u001b[22m!
+                                                
+                        Hi, my name is \u001b[3mTim\u001b[23m!
+                                                
+                        Hi, my name is \u001b[7mTim\u001b[27m!
+                                                
+                        \u001b[7m
+                        Hi, my name is **Tim**!
+                        \u001b[27m""",
+                outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    void writeOutputThrows() {
+
+        Assertions.assertThrows(IOException.class, () -> markdownConverterTest.writeOutput(
+                """
+                        <p>
+                        <b>Hi</b>
+                        <i>Hi</i>
+                        <tt>Hi</tt>
+                        <pre>
+                        Hi, my name is **Tim**!
+                        </pre>
+                        </p>""",
+                "src/tst/resos/test.htl", null));
+    }
+
 }

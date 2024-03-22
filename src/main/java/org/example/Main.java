@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.err.println("Usage: java Main <input_file> [--out <output_file>] [--format=<value>]");
+            System.err.println("Usage: java Main <input_file> [--out <output_file>] [--format=<html/ansi>]");
             System.exit(1);
         }
 
