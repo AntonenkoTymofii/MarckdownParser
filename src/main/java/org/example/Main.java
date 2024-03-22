@@ -27,7 +27,7 @@ public class Main {
 
         try {
             String markdownContent = markdownConverter.readMarkdownFile(inputPath, format);
-            String outputContent = markdownConverter.convertMarkdownToHTML(markdownContent, format);
+            String outputContent = markdownConverter.convertMarkdown(markdownContent, format);
             markdownConverter.writeOutput(outputContent, outputPath, format);
 
         } catch (IOException | IllegalArgumentException | InvalidFormatException e) {

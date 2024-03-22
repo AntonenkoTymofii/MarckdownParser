@@ -16,48 +16,243 @@ class MarkdownConverterTest {
 
     @Test
     void readMarkdownFileTestHtml() throws IOException {
-        Assertions.assertEquals("<p>\nHi, my name is **Tim**!\n</p>",
-                markdownConverterTest.readMarkdownFile("src/test/resources/TEST.md", "html"));
+        Assertions.assertEquals(
+                "<p>\nHi, my name is **Tim**!\n</p>",
+                markdownConverterTest.readMarkdownFile(
+                        "src/test/resources/TEST.md", "html"
+                )
+        );
     }
     @Test
     void readMarkdownFileTestNull() throws IOException {
-        Assertions.assertEquals("<p>\nHi, my name is **Tim**!\n</p>",
-                markdownConverterTest.readMarkdownFile("src/test/resources/TEST.md", null));
+        Assertions.assertEquals(
+                "<p>\nHi, my name is **Tim**!\n</p>",
+                markdownConverterTest.readMarkdownFile(
+                        "src/test/resources/TEST.md", null
+                )
+        );
     }
     @Test
     void readMarkdownFileTestAnsi() throws IOException {
-        Assertions.assertEquals("Hi, my name is **Tim**!\n",
-                markdownConverterTest.readMarkdownFile("src/test/resources/TEST.md", "ansi"));
-        Assertions.assertEquals("Hi, my name is **Tim**!\n",
-                markdownConverterTest.readMarkdownFile("src/test/resources/TEST.md", "ANSI"));
+        Assertions.assertEquals(
+                "Hi, my name is **Tim**!\n",
+                markdownConverterTest.readMarkdownFile(
+                        "src/test/resources/TEST.md", "ansi"
+                )
+        );
+
+        Assertions.assertEquals(
+                "Hi, my name is **Tim**!\n",
+                markdownConverterTest.readMarkdownFile(
+                        "src/test/resources/TEST.md", "ANSI"
+                )
+        );
     }
 
     @Test
-    void readMarkdownFileUnknownPath() {
-        Assertions.assertThrows(IOException.class, () ->
-                markdownConverterTest.readMarkdownFile("src/test/resources/TEST", null));
+    void readMarkdownFileTestUnknownPath() {
+        Assertions.assertThrows(
+                IOException.class,
+                () -> markdownConverterTest.readMarkdownFile(
+                        "src/test/resources/TEST", null
+                )
+        );
     }
 
     @Test
-    void readMarkdownFileUnknownFormat() {
-        Assertions.assertThrows(IllegalArgumentException.class, () ->
-                markdownConverterTest.readMarkdownFile("src/test/resources/TEST.md", "pddh"));
+    void readMarkdownFileTestUnknownFormat() {
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> markdownConverterTest.readMarkdownFile(
+                        "src/test/resources/TEST.md", "pddh"
+                )
+        );
     }
 
     @Test
-    void convertMarkdownToHTMLInvalidFormat() {
-        Assertions.assertThrows(InvalidFormatException.class, () ->
-                markdownConverterTest.convertMarkdownToHTML("**`_Hello_`**", null));
+    void convertMarkdownTestInvalidFormat() {
+        Assertions.assertThrows(
+                InvalidFormatException.class,
+                () -> markdownConverterTest.convertMarkdown(
+                        "**`_Hello_`**", null
+                )
+        );
+
+        Assertions.assertThrows(
+                InvalidFormatException.class,
+                () -> markdownConverterTest.convertMarkdown(
+                        "**`_Hello_`**", "html"
+                )
+        );
+
+        Assertions.assertThrows(
+                InvalidFormatException.class,
+                () -> markdownConverterTest.convertMarkdown(
+                        "**`_Hello_`**", "ansi"
+                )
+        );
     }
 
     @Test
-    void convertMarkdownToHTMLNotFinalFormat() {
-        Assertions.assertThrows(InvalidFormatException.class, () ->
-                markdownConverterTest.convertMarkdownToHTML(" **Hello", null));
+    void convertMarkdownTestNotFinalFormat() {
+        Assertions.assertThrows(InvalidFormatException.class,
+                () -> markdownConverterTest.convertMarkdown(
+                        "<p>\n**Hello dhfjjd**\n</p>\n<p>\n```\n**Hello dhfjjd\n```\n</p>",
+                        null
+                )
+        );
+
+        Assertions.assertThrows(InvalidFormatException.class,
+                () -> markdownConverterTest.convertMarkdown(
+                        "<p>\n**Hello dhfjjd**\n</p>\n<p>\n```\n**Hello dhfjjd\n```\n</p>",
+                        "html"
+                )
+        );
+
+        Assertions.assertThrows(InvalidFormatException.class,
+                () -> markdownConverterTest.convertMarkdown(
+                        "<p>\n**Hello dhfjjd**\n</p>\n<p>\n```\n**Hello dhfjjd\n```\n</p>",
+                        "ansi"
+                )
+        );
+
     }
 
     @Test
-    void convertMarkdownToHTML() {
+    void convertMarkdownTestHtmlBold() throws InvalidFormatException {
+        Assertions.assertEquals(
+                "<p>\nHi, my name is <b>Tim</b>!\n</p>",
+                markdownConverterTest.convertMarkdown(
+                    "<p>\nHi, my name is **Tim**!\n</p>", null
+                )
+        );
+
+        Assertions.assertEquals(
+                "<p>\nHi, my name is <b>Tim</b>!\n</p>",
+                markdownConverterTest.convertMarkdown(
+                     "<p>\nHi, my name is **Tim**!\n</p>", "html"
+                )
+        );
+    }
+
+    @Test
+    void convertMarkdownTestHtmlItalic() throws InvalidFormatException {
+        Assertions.assertEquals(
+                "<p>\nHi, my name is <i>Tim</i>!\n</p>",
+                markdownConverterTest.convertMarkdown(
+                    "<p>\nHi, my name is _Tim_!\n</p>", null
+                )
+        );
+
+        Assertions.assertEquals(
+                "<p>\nHi, my name is <i>Tim</i>!\n</p>",
+                markdownConverterTest.convertMarkdown(
+                     "<p>\nHi, my name is _Tim_!\n</p>", "html"
+                )
+        );
+    }
+
+    @Test
+    void convertMarkdownTestHtmlMono() throws InvalidFormatException {
+        Assertions.assertEquals(
+                "<p>\nHi, my name is <tt>Tim</tt>!\n</p>",
+                markdownConverterTest.convertMarkdown(
+                    "<p>\nHi, my name is `Tim`!\n</p>", null
+                )
+        );
+
+        Assertions.assertEquals(
+                "<p>\nHi, my name is <tt>Tim</tt>!\n</p>",
+                markdownConverterTest.convertMarkdown(
+                     "<p>\nHi, my name is `Tim`!\n</p>", "html"
+                )
+        );
+    }
+
+    @Test
+    void convertMarkdownTestHtmlPre() throws InvalidFormatException {
+        Assertions.assertEquals(
+                "<p>\n<pre>\nHi, my name is **Tim**!\n</pre>\n</p>",
+                markdownConverterTest.convertMarkdown(
+                    "<p>\n```\nHi, my name is **Tim**!\n```\n</p>", null
+                )
+        );
+
+        Assertions.assertEquals(
+                "<p>\n<pre>\nHi, my name is **Tim**!\n</pre>\n</p>",
+                markdownConverterTest.convertMarkdown(
+                        "<p>\n```\nHi, my name is **Tim**!\n```\n</p>", "html"
+                )
+        );
+    }
+
+    @Test
+    void convertMarkdownTestHtml() throws InvalidFormatException {
+        Assertions.assertEquals(
+                "<p>\n<b>Hi</b>\n<i>Hi</i>\n<tt>Hi</tt>\n<pre>\nHi, my name is **Tim**!\n</pre>\n</p>",
+                markdownConverterTest.convertMarkdown(
+                    "<p>\n**Hi**\n_Hi_\n`Hi`\n```\nHi, my name is **Tim**!\n```\n</p>", null
+                )
+        );
+
+        Assertions.assertEquals(
+                "<p>\n<b>Hi</b>\n<i>Hi</i>\n<tt>Hi</tt>\n<pre>\nHi, my name is **Tim**!\n</pre>\n</p>",
+                markdownConverterTest.convertMarkdown(
+                    "<p>\n**Hi**\n_Hi_\n`Hi`\n```\nHi, my name is **Tim**!\n```\n</p>", "html"
+                )
+        );
+    }
+
+    //-----------------------------------------------------------------------------------------------------
+
+    @Test
+    void convertMarkdownTestAnsiBold() throws InvalidFormatException {
+        Assertions.assertEquals(
+                "Hi, my name is \u001b[1mTim\u001b[22m!",
+                markdownConverterTest.convertMarkdown(
+                    "Hi, my name is **Tim**!", "ansi"
+                )
+        );
+    }
+
+    @Test
+    void convertMarkdownTestAnsiItalic() throws InvalidFormatException {
+        Assertions.assertEquals(
+                "Hi, my name is \u001b[3mTim\u001b[23m!",
+                markdownConverterTest.convertMarkdown(
+                        "Hi, my name is _Tim_!", "ansi"
+                )
+        );
+    }
+
+    @Test
+    void convertMarkdownTestAnsiMono() throws InvalidFormatException {
+        Assertions.assertEquals(
+                "Hi, my name is \u001b[7mTim\u001b[27m!",
+                markdownConverterTest.convertMarkdown(
+                        "Hi, my name is `Tim`!", "ansi"
+                )
+        );
+    }
+
+    @Test
+    void convertMarkdownTestAnsiPre() throws InvalidFormatException {
+        Assertions.assertEquals(
+                "\u001b[7m\nHi, my name is **Tim**!\n\u001b[27m",
+                markdownConverterTest.convertMarkdown(
+                    "```\nHi, my name is **Tim**!\n```", "ansi"
+                )
+        );
+    }
+
+    @Test
+    void convertMarkdownTestAnsi() throws InvalidFormatException {
+        Assertions.assertEquals(
+                "\u001b[1mHi\u001b[22m\n\u001b[3mHi\u001b[23m\n\u001b[7mHi\u001b[27m\n\u001b[7m\nHi, my name is **Tim**!\n\u001b[27m",
+                markdownConverterTest.convertMarkdown(
+                    "**Hi**\n_Hi_\n`Hi`\n```\nHi, my name is **Tim**!\n```", "ansi"
+                )
+        );
     }
 
 
